@@ -38,7 +38,17 @@
                     <h2>Download Files</h2>
                     <ul>
                         {% for file in files %}
-                        <li><a href="/download/{{ file }}">{{ file }}</a></li>
+                        <li>
+                            <div class="btns">
+                                {{ file }}
+                                <a href="/download/{{ file }}">
+                                    <button>Download</button>
+                                </a>
+                                <a href="/delete/{{ file }}">
+                                    <button>Delete</button>
+                                </a>
+                            </div>
+                        </li>
                         {% endfor %} {% if files | length == 0 %}
                         <p>Oops! No files available.</p>
                         {% endif %}
