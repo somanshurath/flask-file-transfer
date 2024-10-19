@@ -4,8 +4,11 @@ import os
 app = Flask(__name__)
 
 UPLOAD_FOLDER = 'uploads'
+CLIPBOARD_FILE = './clipboard.txt'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makefil
+if not os.path.exists(CLIPBOARD_FILE):
+    with open(CLIPBOARD_FILE, "w") as clipboard:
+        pass
 
 
 @app.route('/')
@@ -42,7 +45,7 @@ def download_file(filename):
 
 @app.route('/clipboard')
 def clipboard():
-    clipboard = open("./clipboard.txt", "r+")
+    clipboard = open(CLIPBOARD_FILE, "r+")
     texts = clipboard.read().split("@#@")
     clipboard.close()
     return render_template('clipboard.html', texts=texts)
@@ -50,14 +53,14 @@ def clipboard():
 @app.route('/add-text', methods=['POST'])
 def add_text():
     text = request.form['text']
-    with open("./clipboard.txt", "a") as clipboard:
+    with open(CLIPBOARD_FILE, "a") as clipboard:
         clipboard.write("@#@" + text)
     return redirect(url_for('clipboard'))
 
 
 @app.route('/delete-text/<text>')
 def delete_text(text):
-    with open("./clipboard.txt", "r+") as clipboard:
+    with open(CLIPBOARD_FILE, "r+") as clipboard:
         texts = clipboard.read().split("@#@")
         if text in texts:
             texts.remove(text)
