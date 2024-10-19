@@ -5,11 +5,14 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makefil
+
 
 @app.route('/')
 def index():
     files = os.listdir(UPLOAD_FOLDER)
     return render_template('index.html', files=files)
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -21,6 +24,7 @@ def upload_file():
     file.save(os.path.join(UPLOAD_FOLDER, file.filename))
     return redirect(url_for('index'))
 
+
 @app.route('/delete/<filename>')
 def delete_file(filename):
     file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -30,9 +34,38 @@ def delete_file(filename):
     else:
         return 'File not found'
 
+
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
+
+
+@app.route('/clipboard')
+def clipboard():
+    clipboard = open("./clipboard.txt", "r+")
+    texts = clipboard.read().split("@#@")
+    clipboard.close()
+    return render_template('clipboard.html', texts=texts)
+
+@app.route('/add-text', methods=['POST'])
+def add_text():
+    text = request.form['text']
+    with open("./clipboard.txt", "a") as clipboard:
+        clipboard.write("@#@" + text)
+    return redirect(url_for('clipboard'))
+
+
+@app.route('/delete-text/<text>')
+def delete_text(text):
+    with open("./clipboard.txt", "r+") as clipboard:
+        texts = clipboard.read().split("@#@")
+        if text in texts:
+            texts.remove(text)
+            clipboard.seek(0)
+            clipboard.write("@#@".join(texts))
+            clipboard.truncate()
+    return redirect(url_for('clipboard'))
+
 
 if __name__ == '__main__':
     app.run(host='192.168.1.1', port=5050)

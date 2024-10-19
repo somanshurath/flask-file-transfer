@@ -18,8 +18,8 @@ body {
     border-radius: 8px;
     background-color: #2a2a2a;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    overflow-y: auto; /* Enable vertical scrolling */
-    box-sizing: border-box; /* Include padding in the height calculation */
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .small-image {
@@ -53,7 +53,7 @@ form {
     justify-content: center;
 }
 
-input[type='file'] {
+input {
     margin-right: 10px;
     background-color: #333;
     color: #f0f0f0;
@@ -109,4 +109,15 @@ a:hover {
 .btns button {
     padding: 2px 5px;
     margin-left: 10px;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
+.indiv-text {
+    max-width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+    white-space: nowrap;
 }

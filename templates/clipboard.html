@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Clipboard</title>
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='checklist.png') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='styles.css') }}"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                <a href="/">
+                    <img
+                        src="{{ url_for('static', filename='data-transfer.png') }}"
+                        class="small-image"
+                    />
+                </a>
+                <img
+                    src="{{ url_for('static', filename='checklist.png') }}"
+                    class="small-image"
+                />
+                Clipboard
+            </h1>
+            <div class="main-content-clip">
+                <div class="upload-section">
+                    <form action="/add-text" method="post">
+                        <input type="text" name="text" required />
+                        <button type="submit">Paste</button>
+                    </form>
+                </div>
+                <div class="clipboard-section">
+                    <ul>
+                        {% for text in texts %} {% if text | length != 0 %}
+                        <li>
+                            <div class="btns">
+                                {{ text }}
+                                <!-- <a href="/copy/{{ text }}">
+                                    <button>Copy</button>
+                                </a> -->
+                                <a href="/delete-text/{{ text }}">
+                                    <button>Delete</button>
+                                </a>
+                            </div>
+                        </li>
+                        {% endif %} {% endfor %} {% if texts | length == 1 %}
+                        <p>Oops! No texts available.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
