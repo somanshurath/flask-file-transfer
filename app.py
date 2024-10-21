@@ -54,6 +54,7 @@ def clipboard():
 def add_text():
     text = request.form['text']
     with open(CLIPBOARD_FILE, "a") as clipboard:
+        text = text.strip()
         clipboard.write("@#@" + text)
     return redirect(url_for('clipboard'))
 
@@ -71,4 +72,4 @@ def delete_text(text):
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.1', port=5050)
+    app.run(host='0.0.0.0', port=5050)
